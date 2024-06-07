@@ -14,6 +14,7 @@ This project can be build using the provided CMakeLists.txt file.
 Else the dependencies must be linked otherwise.
 
 ###Building with cmake
+
     cd path/to/repository
     mkdir build
     cd build

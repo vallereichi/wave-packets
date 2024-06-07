@@ -1,3 +1,0 @@
-/Users/v.reichi/projects/wave-packets/build/_deps/glm-subbuild/CMakeFiles/glm-populate.dir
-/Users/v.reichi/projects/wave-packets/build/_deps/glm-subbuild/CMakeFiles/edit_cache.dir
-/Users/v.reichi/projects/wave-packets/build/_deps/glm-subbuild/CMakeFiles/rebuild_cache.dir

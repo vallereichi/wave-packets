@@ -1,0 +1,2 @@
+/usr/bin/ar qc librenderClasses.a CMakeFiles/renderClasses.dir/vertexArray.cpp.o CMakeFiles/renderClasses.dir/vertexBuffer.cpp.o CMakeFiles/renderClasses.dir/shader.cpp.o CMakeFiles/renderClasses.dir/renderer.cpp.o
+/usr/bin/ranlib librenderClasses.a

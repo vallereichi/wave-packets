@@ -1,0 +1,10 @@
+/Users/v.reichi/projects/wave-packets/build/CMakeFiles/wavePackets.dir
+/Users/v.reichi/projects/wave-packets/build/CMakeFiles/edit_cache.dir
+/Users/v.reichi/projects/wave-packets/build/CMakeFiles/rebuild_cache.dir
+/Users/v.reichi/projects/wave-packets/build/src/CMakeFiles/renderClasses.dir
+/Users/v.reichi/projects/wave-packets/build/src/CMakeFiles/edit_cache.dir
+/Users/v.reichi/projects/wave-packets/build/src/CMakeFiles/rebuild_cache.dir
+/Users/v.reichi/projects/wave-packets/build/_deps/glm-build/CMakeFiles/edit_cache.dir
+/Users/v.reichi/projects/wave-packets/build/_deps/glm-build/CMakeFiles/rebuild_cache.dir
+/Users/v.reichi/projects/wave-packets/build/_deps/glm-build/glm/CMakeFiles/edit_cache.dir
+/Users/v.reichi/projects/wave-packets/build/_deps/glm-build/glm/CMakeFiles/rebuild_cache.dir

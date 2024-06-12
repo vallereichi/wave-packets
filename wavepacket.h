@@ -1,11 +1,9 @@
 #pragma once
+#include <vector>
+#include <complex>
+#include <cmath>
+#include <numbers>
 
-struct wavepacket
-{
-    float re;
-    float im;
-};
-
-float initializeWavePacket ();
+std::complex<float> gaussWavePacket (float x);
 
 float update ();

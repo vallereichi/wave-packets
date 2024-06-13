@@ -1,32 +1,33 @@
 #include <wavepacket.h>
 
+std::complex<double>* createArray (float length, float start, float end)
+{
+    std::complex<double> *array = new std::complex<double>[length + 1];
+    
 
-std::complex<double> gaussWavePacket1D (double x, double x0, double k, float sigma) {
-    std::complex<double> i(0.0, 1.0);
-    std::complex<double> wave = exp(i * k * (x - x0));
-    double envelope = sqrt(1 / sqrt(M_PI) / sigma) * exp(- pow((x-x0), 2) / 2 / pow(sigma, 2));
+    float increment = (end - start) / length;
 
-    std::complex<double> gauss1D = wave * envelope;
-    return gauss1D;
-}
-
-std::vector<std::complex<double>*> initializeWavePacket1D (int size, int start, int end) {
-    double xarray[size];
-    std::complex<double> yarray[size];
-    float dx = (end - start) / size;
-
-    for (int i = 0; i <= size; i++) {
-        float x = start + i * dx;
-        std::complex<double> y = gaussWavePacket1D (x, 0.0, 5.0, 0.1);
-
-        xarray[i] = x;
-        yarray[i] = y;
+    for (int i = 0; i <= length; i++)
+    {
+        array[i] = start + i * increment;
     }
 
-    std::vector<std::complex<double>> psi0;
-    psi0.push_back(xarray);
-    psi0.push_back(yarray);
+    return array;
+}
 
-    return psi0;
 
+void gaussWavePacket1D (std::complex<double> *xarray, float length, double x0, double k, float sigma)
+ {
+    // iu is the imaginary unit "i"
+    std::complex<double> iu(0.0, 1.0);
+    std::complex<double> wave;
+    std::complex<double> envelope;
+
+    for (int i = 0; i <= length; i++)
+    {
+        wave = exp(iu * (xarray[i] - x0) * k);
+        envelope = sqrt(1 / sqrt(M_PI) / sigma) * exp(- pow((xarray[i]-x0), 2) / (2*pow(sigma, 2)));
+
+        xarray[i] = wave * envelope;
+    }
 }

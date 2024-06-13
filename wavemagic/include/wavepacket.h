@@ -10,4 +10,6 @@ std::complex<double>* gaussWavePacket1D (std::complex<double> *xarray, float len
 
 double* getProbabilityDensity (std::complex<double> *array, int arraySize);
 
+double* compressArrays (std::complex<double> *xarray, double *probDensity, int arraySize);
+
 float update ();

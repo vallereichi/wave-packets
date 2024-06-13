@@ -1,6 +1,6 @@
-#include <wavepacket.h>
+#include "wavepacket.h"
 
-std::complex<double>* createArray (float arraySize, float start, float end)
+std::complex<double>* createArray (int arraySize, float start, float end)
 {
     std::complex<double> *array = new std::complex<double>[arraySize];
     

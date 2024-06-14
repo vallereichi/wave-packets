@@ -15,6 +15,7 @@ struct VertexBufferElement
         switch (type)
         {
             case GL_FLOAT         : return sizeof(GLfloat);
+            case GL_DOUBLE        : return sizeof(GLdouble);
             case GL_UNSIGNED_INT  : return sizeof(GLuint);
             case GL_UNSIGNED_BYTE : return sizeof(GLbyte);
         }
@@ -34,6 +35,7 @@ class VertexBufferLayout
             m_Stride(0) { }
 
         void AddFloat(unsigned int count)        { Push(GL_FLOAT, count, GL_FALSE);        }
+        void AddDouble(unsigned int count)       { Push(GL_DOUBLE, count, GL_FALSE);       }
         void AddUnsignedInt(unsigned int count)  { Push(GL_UNSIGNED_INT, count, GL_FALSE); }
         void AddUnsignedByte(unsigned int count) { Push(GL_UNSIGNED_BYTE, count, GL_TRUE); }
 

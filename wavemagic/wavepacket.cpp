@@ -56,7 +56,7 @@ double* compressArrays (std::complex<double> *xarray, double *probDensity, int a
     double* compressedArray = new double[arraySize*2];
     int indexCounter = 0;
 
-    for (int i = 0; i < arraySize; i+=2)
+    for (int i = 0; i < 2*arraySize; i+=2)
     {
         compressedArray[i] = std::abs(xarray[indexCounter]);
         compressedArray[i + 1] = probDensity[indexCounter];

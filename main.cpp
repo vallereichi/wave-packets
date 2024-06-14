@@ -19,6 +19,8 @@
 #include "vertexBuffer.h"
 #include "vertexBufferLayout.h"
 #include "vertexArray.h"
+#include "wavepacket.h"
+#include "dataOutput.h"
 
 
 //function to initialize the window
@@ -78,32 +80,17 @@ GLFWwindow* InitWindow() {
 //specifying the space in which the action happens
 float left = 0.0;
 float right = 500.0;
-float top = 2.0;
-float bottom = -2.0;
+float top = 0.5;
+float bottom = -0.1;
 
 
-//simple sine wave
-std::vector<float> wavePacket(int length, float start, float end, float width) {
-    float increment;
+//initial wave characteristics
+int arraySize = 1000;
+double x0 = 250;
+double k = 100;
+float sigma = 30;
 
-    increment = (end - start)/length;
 
-    std::vector<float> waveArray;
-
-    float x;
-    float y;
-
-    for (int i = 0; i < length ; i++) {
-        x = start + i * increment;
-        y = (cos(0.5 * x) * exp(-(x*x)/(width*width)));
-
-        waveArray.push_back(x);
-        waveArray.push_back(y);
-    }
-
-    return waveArray;
-
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //MAIN FUNCTION START
@@ -115,22 +102,33 @@ int main (void) {
         return -1;
     }
 
-
     //data that needs to be drawn
-    std::vector<float> vec = wavePacket(10000, left, right, 50);
-    float positions[vec.size()];
+    std::complex<double> *xarray = createArray(arraySize, left, right);
+    std::complex<double> *yarray = gaussWavePacket1D(xarray, arraySize, x0, k, sigma);
+    double *probDensity = getProbabilityDensity(yarray, arraySize);
+    double *positions = compressArrays(xarray, probDensity, arraySize);
 
-    std::cout << "Number of points on the screen: " << sizeof(positions)/sizeof(float) << std::endl;
-    std::copy(vec.begin(), vec.end(), positions);
+    writeDataToFile(positions, 2*arraySize, "../output/initWave.txt");
+    
+    std::cout << "Number of points on the screen: " << arraySize*2 << std::endl;
+
+    //top and bottom window margin
+    float max_top = *std::max_element(probDensity, probDensity + arraySize);
+    float min_bottom = *std::min_element(probDensity, probDensity + arraySize);
+    float top = max_top + max_top *0.1;
+    float bottom = min_bottom - max_top * 0.1;
+
+    
+    
 
     {
         //add orthonormal projection
-        glm::mat4 projection = glm::ortho(left, right, top, bottom);
+        glm::mat4 projection = glm::ortho(left, right, bottom, top);
         
         VertexArray va;
-        VertexBuffer vb(positions, sizeof(positions));
+        VertexBuffer vb(positions, 2*arraySize*sizeof(double));
         VertexBufferLayout layout;
-        layout.AddFloat(2);
+        layout.AddDouble(2);
         
         
         Shader shader("../basic.shader");

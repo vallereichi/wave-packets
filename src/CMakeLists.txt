@@ -19,4 +19,5 @@ add_library(renderClasses
     vertexBuffer.cpp
     shader.cpp
     renderer.cpp
+    dataOutput.cpp
     )

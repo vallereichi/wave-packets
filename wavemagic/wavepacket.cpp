@@ -66,3 +66,90 @@ double* compressArrays (std::complex<double> *xarray, double *probDensity, int a
 
     return compressedArray;
 }
+
+
+#include <Eigen/Sparse>
+
+typedef Eigen::SparseMatrix<double> SpMat;
+typedef Eigen::Triplet<double> T;
+
+static SpMat createUnitMat (int arraySize)
+{
+    SpMat One(arraySize, arraySize);
+    One.setIdentity();
+
+    return One;
+}
+
+
+static SpMat createHamiltonian1D (int arraySize, SpMat V)
+{
+    std::vector<T> TripletList;
+    TripletList.reserve(3*arraySize);
+    for (int i = 0; i < arraySize; i++)
+    {
+        for (int j = 0; j < arraySize; j++)
+        {
+            if (i == j) TripletList.push_back(T(i, j, -2));
+            else if (i == j + 1) TripletList.push_back(T(i, j, 1));
+            else if (i == j - 1) TripletList.push_back(T(i, j, 1));
+        }
+    }
+    SpMat T(arraySize, arraySize);
+    SpMat H(arraySize, arraySize);
+
+    T.setFromTriplets(TripletList.begin(), TripletList.end());
+
+    H = T + V;
+
+    return H;
+}
+
+
+static SpMat setZeroPetential (int arraySize)
+{
+    SpMat V(arraySize, arraySize);
+    return V; 
+}
+
+
+std::vector<Eigen::VectorXcd> CrankNicholson1D (SpMat Potential, std::complex<double>* psi_init, int arraySize, int N_Tsteps, double dt)
+{
+    //imaginary unit "i"
+    std::complex<double> iu(0.0, 1.0);
+
+
+    //create Hamiltonian
+    SpMat H = createHamiltonian1D(arraySize, Potential);
+    //create unit matrix
+    SpMat One = createUnitMat(arraySize);
+
+    //unitary matrices U1 and U2
+    SpMat U1 = One - (0.5 * dt * iu) * H;
+    SpMat U2 = One + (0.5 * dt * iu) * H;
+
+    //compress U2 so eigen can handle it better
+    U2.makeCompressed();
+
+    //LU decomposition of U2
+    Eigen::SparseLU<SpMat> solver;
+    solver.analyzePattern(U2);
+    solver.factorize(U2);
+
+
+    //prepare everything for solving with eigen
+    std::vector<Eigen::VectorXcd> psi;
+
+    Eigen::VectorXcd psi0 = Eigen::Map<Eigen::VectorXcd>(psi_init, arraySize);
+    psi.push_back(psi0);
+
+    //solve schrödinger equation for every time step
+    for (int i = 0; i < arraySize; i++)
+    {
+        Eigen::VectorXcd b = U1 * psi[i];
+
+        psi.push_back(solver.solve(b));
+    }
+
+    return psi;
+}
